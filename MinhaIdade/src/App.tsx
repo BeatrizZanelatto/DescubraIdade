@@ -1,20 +1,29 @@
-import React, { useState } from 'react';
-import './App.css'; // Importe seu arquivo de estilos CSS
+import React, { useState} from 'react';
+import './App.css';
 
 function App() {
   const [nome, setNome] = useState('');
   const [anoNascimento, setAnoNascimento] = useState('');
   const [idade, setIdade] = useState('');
+  const [erroIdade, setErroIdade] = useState('');
 
   const calcularIdade = () => {
     const anoAtual = new Date().getFullYear();
     const idadeCalculada = anoAtual - parseInt(anoNascimento, 10);
-    setIdade(idadeCalculada);
+    
+
+    if (idadeCalculada < 0 || idadeCalculada > 120) {
+      setErroIdade('A data inserida está errada.');
+    } else {
+      setErroIdade('');
+      setIdade(idadeCalculada);
+    }
   };
 
   return (
     <div className="container">
       <h1>Descubra a sua idade</h1>
+      ❤ by Zanelatto ❤
       <label>
         Nome:
         <input
@@ -32,13 +41,15 @@ function App() {
         />
       </label>
       <button onClick={calcularIdade}>Calcular idade</button>
-      {idade !== '' && (
-        <p>
-          Olá {nome}, você tem: {idade} anos.
-        </p>
+      {idade !== '' && erroIdade === '' && (
+        <p>Olá {nome}, você tem {idade} anos de idade!</p>
+      )}
+      {erroIdade !== '' && (
+        <p>{erroIdade}</p>
       )}
     </div>
   );
 }
+
 
 export default App;
